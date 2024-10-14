@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="../style.css">
+    <script src="../script.js"
+            async></script>
+    <title>D-Crypt | Generate keys</title>
+</head>
+
+<body>
+
+    <header>
+        <div class="d-crypt">D-Crypt <span class="version">v.1.0</span></div>
+        <nav class="responsive">
+            <span class="icon"
+                  onclick="toggleMenu()">☰</span>
+            <ul>
+                <li><a href="../../index.html">Encrypt</a></li>
+                <li><a href="decrypt.html">Decrypt</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gen-keys.html">Generate new keys</a></li>
+                <li><a href="addContact.html">Add a contact</a></li>
+                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>GENERATE NEW KEYS</h1>
+
+        <p>Open and edit the file "keys.js" on the folder "inc" with the following informations: </p>
+
+        <p>Lines 3 and 4: Replace the XXXXX or existing key for your new private key on line 3 and public key on line
+            4.<br>
+            ⚠️ DO NOT DELETE ` ` between your keys, around your keys; just replace the red part, and save the file once
+            you're done.<br><br>
+            If you made a mistake or erased something, you can copy and paste the entire file using the code below,
+            inside the black box. Don't forget to save.
+        <pre style="border: 2px solid black; padding: 1vw;">const keys = {
+            self: {
+                privateKeyBase64: `<span id="privateKeyDisplay" class="bold red">PASTE_YOUR_PRIVATE_KEY_HERE</span>`, // Change for your private Key
+                publicKeyBase64: `<span id="publicKeyDisplay" class="bold red">PASTE_YOUR_PUBLIC_KEY_HERE</span>` // Change for your public key
+            },
+            global: {
+                privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not change this line
+                publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not change this line
+              },
+            }</pre>
+
+        </p>
+
+        <p><strong>PRIVATE KEY</strong> <textarea id="privateKey"
+                      readonly></textarea> <button onclick="copyToClipboard('privateKey')">Copy</button></p>
+        <p><strong>PUBLIC KEY</strong> <textarea id="publicKey"
+                      readonly></textarea> <button onclick="copyToClipboard('publicKey')">Copy</button></p>
+
+        <script>
+            (function () {
+                window.sodium = {
+                    onload: function (sodium) {
+                        if (!sodium) {
+                            console.error("Erreur: sodium n'est pas défini.");
+                            return;
+                        }
+
+                        // Generate new keys
+                        const keyPair = sodium.crypto_box_keypair();
+
+                        // Convert keys to text format
+                        const publicKeyText = sodium.to_base64(keyPair.publicKey);
+                        const privateKeyText = sodium.to_base64(keyPair.privateKey);
+
+                        // Display keys in the text areas
+                        document.getElementById('privateKey').value = privateKeyText;
+                        document.getElementById('publicKey').value = publicKeyText;
+
+                        // Dynamically replace placeholders in the instruction
+                        document.getElementById('privateKeyDisplay').textContent = privateKeyText;
+                        document.getElementById('publicKeyDisplay').textContent = publicKeyText;
+                    }
+                };
+            })();
+
+            function copyToClipboard(elementId) {
+                const copyText = document.getElementById(elementId);
+                copyText.select();
+                document.execCommand("copy");
+                alert("Copied!");
+            }
+        </script>
+        <script src="../../libsodium.js-master/dist/browsers/sodium.js"
+                async></script>
+
+</body>
+
+</html>

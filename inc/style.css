@@ -1,0 +1,210 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+header {
+  background-color: #444;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style pour les écrans de taille normale */
+nav.responsive {
+  display: flex;
+  justify-content: space-between;
+}
+
+nav.responsive .icon {
+  display: none;
+}
+
+nav.responsive ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+nav.responsive ul li {
+  margin-right: 20px;
+}
+
+nav.responsive ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+nav.responsive ul li a:hover {
+  background-color: #666;
+}
+
+@media screen and (max-width: 768px) {
+  nav.responsive ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    background-color: #f9f9f9;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+  }
+
+  nav.responsive ul.active {
+    display: flex;
+  }
+
+  nav.responsive ul li {
+    margin: 0;
+    text-align: center;
+  }
+
+  nav.responsive .icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  nav.responsive ul li a {
+    color: #000;
+  }
+
+  nav.responsive ul li a:hover {
+    color: #fff;
+    background-color: #666;
+  }
+}
+
+.content {
+  padding: 10px;
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  word-break: break-word;
+}
+
+h1 {
+  text-align: center;
+}
+
+/* Style pour les étiquettes des formulaires */
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style pour les champs de texte */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Garantit que la largeur inclut le padding et la bordure */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Style pour les boutons */
+button {
+  padding: 10px 20px;
+  background-color: #7f7d79;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #f38470;
+}
+
+/* Style pour les boutons de type "submit" */
+[type="submit"] {
+  background-color: #7f7d79;
+}
+
+[type="submit"]:hover {
+  background-color: #f38470;
+}
+
+/* Style pour les zones de texte */
+textarea {
+  resize: vertical; /* Permet de redimensionner verticalement seulement */
+}
+
+/* Style pour les formulaires */
+form {
+  max-width: 600px; /* Largeur maximale du formulaire */
+  margin: 0 auto; /* Centre le formulaire horizontalement */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+li {
+  list-style-type: none;
+}
+
+.about,
+.text-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: 800;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.support {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.support > table {
+  text-align: center;
+}
+
+.support > table {
+  border: 1px solid black;
+}
+
+.support > table th,
+.support > table td {
+  padding: 1vw;
+}
+
+.version {
+  font-size: 0.5rem;
+  vertical-align: top;
+}
+
+.download-link {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  background-color: #45a049;
+}

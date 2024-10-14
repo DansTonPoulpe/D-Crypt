@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="../style.css" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <script src="libsodium.js-master/dist/browsers/sodium.js"
+            async></script>
+    <script src="inc/contacts.js"
+            async></script>
+    <script src="inc/script.js"
+            async></script>
+    <title>D-Crypt Duplication</title>
+
+    <style>
+        .copy-area {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .loading-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="d-crypt">
+            D-Crypt
+            <span class="version">v.1.0</span>
+        </div>
+        <nav class="responsive">
+            <span class="icon"
+                  onclick="toggleMenu()">☰</span>
+            <ul>
+                <li><a href="../../index.html">Encrypt</a></li>
+                <li><a href="decrypt.html">Decrypt</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gen-keys.html">Generate new keys</a></li>
+                <li><a href="addContact.html">Add a contact</a></li>
+                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <body></body>
+    <main class="content">
+
+        <h1>D-Crypt Duplication</h1>
+
+        How to duplicate D-Crypt step by step:
+
+        <ul>
+            <li>1. Make a copy of your entire D-Crypt folder.</li>
+            <li>2. On the copy folder, open D-Crypt normaly through your web browser</li>
+            <li>3. Go to "duplicate D-Crypt" in the menu, copy the provided code below.</li>
+            <li>4. Paste and decrypt it through the "Decrypt" option in the menu</li>
+            <li>5. Download the archived file</li>
+            <li>6. Place the archived file at the root of the copy folder where you have "index.html, LICENCE and
+                README".</li>
+            <li>7. Go to "inc" folder and delete "contacts.js" and "keys.js".</li>
+            <li>8. Return to the root and extract the archived file here (it will automatically create a new
+                "contacts.js" and "keys.js" file inside "inc" folder without your own and private informations)</li>
+            <li>9. Delete the archived file on the root.</li>
+            <li>10. You can now copy the folder on a USB drive to share it.</li>
+        </ul>
+
+
+        <div id="loading"
+             class="loading-animation">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+        <div id="copyDiv"
+             class="copy-area">
+            [zip]W4kZw1WvHWB9WWSV-ah5cCbr7PVVMer7SUp7a3Us71jo0vZqRALS5hSWGWSNw8CsqUpJwI6Tq42ItVq-m0yYyaKTzBSxtKfOuqfwHg-gfTUaDfr_2BFNvJyIn0IFLrn7OX5bBONY-83CEZnKGm5U9fDlU8H2Uv1H5KHcJpQicg1Q6LGVUiCyZesmoNwKX0GPaCeY6QnLjy1F0sht4R8Ve9Cs_Jy_fgQVKgXATcCZ1bu-vPP6NZVrBcqdxqaQyLxhz3mcOOL4jdumnxDQLI0wLXNa97GTuOQ9EuhKBhb3tmB0p4zMPN4pEM67oQ50ZIJxZZlE3M-o_KK15jfYFWKNS_yCBHUXb6Ls1pr1cfB9B8CYBpf9VIEZ5Cm0IMnPyutCZFH4z3U3MLRnxXGSvnwvjay78eIVd7_lwUInButFEebwhfC8V79wPJ0sMHondxHie0LJ72dcoVAGEoM2bYc9ADzTaXsayTybwoQH5rtOCzK6ShBX5NY0m5lfFzfHGN-4Bg17fzXpgTQ38a0BW-iFYDScBR_r8xsSYN4TX6ndd6zu1MXv-fVp5ddeTZ-l8D3xyUT_-4-EmTerurczJQdzc_NqiSrYEldOMIXQ4y5UjxIr0bY0p76ctW5aElneJElVlcxBNI7T2l6Kjh-EyTykrdcaxQ6CCBarudl4ywSxZ84dAOCadJS1EtMx4DqdK4qxlWeB6Ca3nyqR1JDjmSz-aEg2Jz3DnB5pifIgyJ3bmlHpIVzr6V5UjgEF8hGwJs5haFohT4fPMhkD_sT5lbekb0CGC1TUAmDhBvis9qcTTKX0M3k1Vr0hNHLHk4-b9TMO6GGwxlsxa9fZkjF1JDQmdauXRpZdW1DhCjqYWfsvaMLYdIfpepl6Ctuev4GqCQe5IaTcYFjTlnRbWr3HtrYd3Xps7zeZvNB_nRSYNwOzqs1rGBN3mk7dRVHOKHEKYu88_PNr2j3EW1P57CnISecBmYfhm7ckTFjohfqNVZgCe_9njlOikLu8IKIGtJ3MNUGdn3BwNTFJIfFVg3E[/zip]
+        </div>
+
+        <button onclick="copyContent()">Copy</button>
+
+        <a href="decrypt.html"> <button class="copy-btn">Decrypt now (global key)</button></a>
+
+    </main>
+</body>
+
+<script>
+    function copyContent() {
+        // Get the full content (even if only 200 characters are displayed)
+        var content = document.getElementById('copyDiv').getAttribute('data-fulltext');
+        navigator.clipboard.writeText(content).then(function () {
+            alert('Content copied to clipboard!');
+        }, function (err) {
+            alert('Failed to copy: ', err);
+        });
+    }
+
+    // Function to show only the first 200 characters visually
+    document.addEventListener('DOMContentLoaded', function () {
+        const divContent = document.getElementById('copyDiv').innerText;
+        document.getElementById('copyDiv').setAttribute('data-fulltext', divContent); // Store full content
+        if (divContent.length > 200) {
+            document.getElementById('copyDiv').innerText = divContent.substring(0, 200) + "...";
+        }
+    });
+
+    // Simulate page loading (for demo purposes, replace with actual loading logic)
+    window.addEventListener('load', function () {
+        document.getElementById('loading').style.display = 'none';
+    });
+</script>
+
+</html>

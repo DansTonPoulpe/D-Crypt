@@ -1,0 +1,33 @@
+{
+  "name": "crypto_kdf_derive_from_key",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "subkey_len",
+      "type": "uint"
+    },
+    {
+      "name": "subkey_id",
+      "type": "u64"
+    },
+    {
+      "name": "ctx",
+      "type": "string",
+      "length": "libsodium._crypto_kdf_contextbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_kdf_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "subkey",
+      "length": "subkey_len",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, subkey_id_lo, subkey_id_hi, ctx_address, key_address)",
+  "return": "_format_output(subkey, outputFormat)"
+}

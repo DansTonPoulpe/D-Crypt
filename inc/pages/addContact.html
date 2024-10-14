@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="../style.css" />
+    <script src="script.js"
+            async></script>
+    <title>D-Crypt | Add a contact</title>
+    <style>
+        .header-flex {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .header-flex h3 {
+            flex: 1;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="d-crypt">
+            D-Crypt
+            <span class="version">v.1.0</span>
+        </div>
+        <nav class="responsive">
+            <span class="icon"
+                  onclick="toggleMenu()">☰</span>
+            <ul>
+                <li><a href="../../index.html">Encrypt</a></li>
+                <li><a href="decrypt.html">Decrypt</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gen-keys.html">Generate new keys</a></li>
+                <li><a href="addContact.html">Add a contact</a></li>
+                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>ADD NEW CONTACTS</h1>
+        <div class="header-flex">
+            <div>
+
+                <h3>✱ How to add yourself as a contact</h3>
+                <p>(For example, to encrypt your cryptocurrency wallet's passphrase or personal documents, a picture...)
+                </p>
+
+                <ul>
+                    <li>
+                        1. Open the file named
+                        <strong>"contacts.js"</strong>
+                        in the
+                        <strong>"inc"</strong>
+                        folder using any text editor (like Notepad).
+                    </li>
+                    <li>
+                        2. Look for the line that says:
+                        <strong>Myself XXXXX</strong>
+                        .
+                    </li>
+                    <li>
+                        3. Replace
+                        <strong>XXXXX</strong>
+                        with your public key.</strong>
+                        <u>
+                            You can find it in the
+                            "keys.js"
+                            file, on line 4.
+                        </u>
+                    </li>
+                    <li>4. Save the file and close it.</li>
+                </ul>
+
+            </div>
+            <div>
+                <h3>✱ How to add someone else as a contact</h3>
+
+                <ul>
+                    <li>1. Open the same <strong>"contacts.js"</strong> file using a text editor.</li>
+                    <li>2. Under the line N°3 that says "Myself," create a new line for each contact you want to add.
+                    </li>
+                    <li>
+                        Write your contact's name (<u>no spaces in the name itself</u>), followed by a space, then
+                        <strong>THEIR PUBLIC KEY</strong>. Each contact should be on a new line.
+                    </li><br>
+                    <li>Example:</li>
+                    <pre>const contactsData = `
+    Global PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A
+    Myself XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span class="red bold">
+    JohnDoe PUBLIC_KEY
+    JaneSmith PUBLIC_KEY
+    This_is_my_3rd_contact_I_can_use_underscore_in_the_name_but_no_space PUBLIC_KEY</span>
+    `;</pre>
+                    <li>4. Make sure you don't accidentally delete the last line of code <strong>`;</strong></li>
+                    <li>5. Save and close the file. You should now see your new contacts in the list for encrypting a
+                        message.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

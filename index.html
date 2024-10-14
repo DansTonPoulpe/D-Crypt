@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet"
+        href="inc/style.css" />
+  <script src="libsodium.js-master/dist/browsers/sodium.js"
+          async></script>
+  <script src="inc/contacts.js"
+          async></script>
+  <script src="inc/script.js"
+          async></script>
+  <title>D-Crypt | Encrypt</title>
+</head>
+
+<body>
+  <header>
+    <div class="d-crypt">
+      D-Crypt
+      <span class="version">v.1.0</span>
+    </div>
+    <nav class="responsive">
+      <span class="icon"
+            onclick="toggleMenu()">☰</span>
+      <ul>
+        <li><a href="index.html">Encrypt</a></li>
+        <li><a href="inc/pages/decrypt.html">Decrypt</a></li>
+        <li><a href="inc/pages/about.html">About</a></li>
+        <li><a href="inc/pages/gen-keys.html">Generate new keys</a></li>
+        <li><a href="inc/pages/addContact.html">Add a contact</a></li>
+        <li><a href="inc/pages/duplication.html">Duplicate D-Crypt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section id="encryptTextSection">
+      <h1>Encrypt a Message or a File</h1>
+      <form id="textInputForm">
+        <label for="contactSelect">Select a contact:</label>
+        <select id="contactSelect"></select>
+        <label for="textInput">Enter Text:</label>
+        <textarea id="textInput"
+                  rows="4"
+                  cols="50"></textarea>
+        <button type="button"
+                id="encryptTextButton">Encrypt Text</button>
+      </form>
+    </section>
+    <br />
+    <br />
+    <section id="encryptFileSection">
+      <form id="uploadForm"
+            enctype="multipart/form-data">
+        <label for="contactSelectFile">Select a contact:</label>
+        <select id="contactSelectFile"></select>
+        <label for="fileInput">Select a file:</label>
+        <input type="file"
+               id="fileInput"
+               name="file"
+               required />
+        <button type="submit">Upload and Encrypt</button>
+      </form>
+    </section>
+
+    <section id="resultContainer"></section>
+  </main>
+
+  <script>
+    window.sodium = {
+      onload: function (sodium) {
+        setupEncryption(sodium)
+      },
+    }
+
+    function setupEncryption(sodium) {
+      const resultContainer = document.getElementById("resultContainer");
+
+      document.getElementById("encryptTextButton").addEventListener("click", function () {
+        const text = document.getElementById("textInput").value;
+        const selectedKey = document.getElementById("contactSelect").value;
+
+        if (text.trim() === "" || !selectedKey) {
+          alert("Please enter some text and select a contact.");
+          return;
+        }
+
+        // Add delay before encrypting a message
+        setTimeout(() => {
+          const textBytes = new TextEncoder().encode(text);
+          const encryptedContent = encryptContent(sodium, textBytes, selectedKey);
+
+          resultContainer.innerHTML = `
+                  <h4>Encrypted result:</h4>
+                  <button id="copyButton">Copy to Clipboard</button>
+                  <p id="encryptedText">${encryptedContent}</p>
+              `;
+
+          document.getElementById("copyButton").addEventListener("click", function () {
+            copyToClipboard("encryptedText", "Encrypted text copied to clipboard!");
+          });
+        }, 500); // 0.5s delay
+      });
+
+      document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        const selectedKey = document.getElementById("contactSelectFile").value;
+
+        if (!file || !selectedKey) {
+          alert("Please select a file and a contact.");
+          return;
+        }
+
+        // Add delay before encrypting a file
+        setTimeout(async () => {
+          const fileContent = await readFileAsArrayBuffer(file);
+          const fileType = file.name.split(".").pop().toLowerCase();
+          const encryptedContent = encryptContent(sodium, new Uint8Array(fileContent), selectedKey, fileType);
+
+          resultContainer.innerHTML = `
+                  <h4>Encrypted result:</h4>
+                  <button id="copyButton">Copy to Clipboard</button>
+                  <p id="encryptedText">${encryptedContent}</p>
+              `;
+
+          document.getElementById("copyButton").addEventListener("click", function () {
+            copyToClipboard("encryptedText", "Encrypted file content copied to clipboard!");
+          });
+        }, 500); // 0.5s delay
+      });
+    }
+
+    async function readFileAsArrayBuffer(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function encryptContent(sodium, content, publicKeyBase64, fileType) {
+      const publicKey = sodium.from_base64(publicKeyBase64);
+      const encryptedContent = sodium.crypto_box_seal(content, publicKey);
+      const base64EncryptedContent = sodium.to_base64(encryptedContent);
+
+      switch (fileType) {
+        case "png":
+          return "[png]" + base64EncryptedContent + "[/png]";
+        case "jpg":
+          return "[jpg]" + base64EncryptedContent + "[/jpg]";
+        case "pdf":
+          return "[pdf]" + base64EncryptedContent + "[/pdf]";
+        case "zip":
+          return "[zip]" + base64EncryptedContent + "[/zip]";
+        default:
+          return base64EncryptedContent;
+      }
+    }
+
+    function copyToClipboard(elementId, successMessage) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard
+        .writeText(text)
+        .then(() => alert(successMessage))
+        .catch(err => console.error("Error copying text to clipboard", err));
+    }
+  </script>
+</body>
+
+</html>
