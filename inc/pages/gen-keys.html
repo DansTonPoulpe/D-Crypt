@@ -2,98 +2,187 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet"
-          href="../style.css">
-    <script src="../script.js"
-            async></script>
-    <title>D-Crypt | Generate keys</title>
+  <meta charset="UTF-8">
+  <title>D-Crypt | Generate Keys</title>
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- Scripts externes -->
+  <script src="../script.js" defer></script>
 </head>
 
 <body>
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <button id="menu-toggle" aria-label="Open menu">☰</button>
+      <nav>
+        <ul id="menu">
+          <li><a href="../../index.html">Encrypt</a></li>
+          <li><a href="decrypt.html">Decrypt</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gen-keys.html" class="active">Keys generation</a></li>
+          <li><a href="addContact.html">Manage contacts</a></li>
+          <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <header>
-        <div class="d-crypt">D-Crypt <span class="version">v.1.0</span></div>
-        <nav class="responsive">
-            <span class="icon"
-                  onclick="toggleMenu()">☰</span>
-            <ul>
-                <li><a href="../../index.html">Encrypt</a></li>
-                <li><a href="decrypt.html">Decrypt</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="gen-keys.html">Generate new keys</a></li>
-                <li><a href="addContact.html">Add a contact</a></li>
-                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <section class="generate">
+        <h1>Generate New Keys</h1>
 
-    <div class="content">
-        <h1>GENERATE NEW KEYS</h1>
-
-        <p>Open and edit the file "keys.js" on the folder "inc" with the following informations: </p>
-
-        <p>Lines 3 and 4: Replace the XXXXX or existing key for your new private key on line 3 and public key on line
-            4.<br>
-            ⚠️ DO NOT DELETE ` ` between your keys, around your keys; just replace the red part, and save the file once
-            you're done.<br><br>
-            If you made a mistake or erased something, you can copy and paste the entire file using the code below,
-            inside the black box. Don't forget to save.
-        <pre style="border: 2px solid black; padding: 1vw;">const keys = {
-            self: {
-                privateKeyBase64: `<span id="privateKeyDisplay" class="bold red">PASTE_YOUR_PRIVATE_KEY_HERE</span>`, // Change for your private Key
-                publicKeyBase64: `<span id="publicKeyDisplay" class="bold red">PASTE_YOUR_PUBLIC_KEY_HERE</span>` // Change for your public key
-            },
-            global: {
-                privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not change this line
-                publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not change this line
-              },
-            }</pre>
-
+        <p>
+          Open and edit the file <code>keys.js</code> in the folder <code>inc</code> with the following information:
         </p>
 
-        <p><strong>PRIVATE KEY</strong> <textarea id="privateKey"
-                      readonly></textarea> <button onclick="copyToClipboard('privateKey')">Copy</button></p>
-        <p><strong>PUBLIC KEY</strong> <textarea id="publicKey"
-                      readonly></textarea> <button onclick="copyToClipboard('publicKey')">Copy</button></p>
+        <p>
+          Lines <strong>3</strong> and <strong>4</strong>: Replace the placeholders with your new <strong>private key</strong> and <strong>public key</strong>.<br>
+          ⚠️ <strong>Do not delete</strong> the backticks <code>`</code> around your keys — just replace the red part and save the file once you're done.
+        </p>
 
-        <script>
-            (function () {
-                window.sodium = {
-                    onload: function (sodium) {
-                        if (!sodium) {
-                            console.error("Erreur: sodium n'est pas défini.");
-                            return;
-                        }
+        <p>
+          If you made a mistake or erased something, copy and paste the entire file using the code below:
+        </p>
 
-                        // Generate new keys
-                        const keyPair = sodium.crypto_box_keypair();
+        <pre class="code-block">
+const keys = {
+  self: {
+    privateKeyBase64: `<span id="privateKeyDisplay" class="red">PASTE_YOUR_PRIVATE_KEY_HERE</span>`, // Change for your private key
+    publicKeyBase64: `<span id="publicKeyDisplay" class="red">PASTE_YOUR_PUBLIC_KEY_HERE</span>` // Change for your public key
+  },
+  global: {
+    privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not change this line
+    publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not change this line
+  },
+}</pre>
+</section>
 
-                        // Convert keys to text format
-                        const publicKeyText = sodium.to_base64(keyPair.publicKey);
-                        const privateKeyText = sodium.to_base64(keyPair.privateKey);
+    <!-- GENERATED KEYS DISPLAY -->
+    <section class="generated-keys">
+      <div class="key-group">
+        <label for="privateKey"><strong>PRIVATE KEY</strong></label>
+        <textarea id="privateKey" readonly></textarea>
+        <button class="copy-btn" data-copy-target="privateKey">Copy</button>
+      </div> <br>
+      <div class="key-group">
+        <label for="publicKey"><strong>PUBLIC KEY</strong></label>
+        <textarea id="publicKey" readonly></textarea>
+        <button class="copy-btn" data-copy-target="publicKey">Copy</button>
+      </div>
+    </section>
+  </main>
 
-                        // Display keys in the text areas
-                        document.getElementById('privateKey').value = privateKeyText;
-                        document.getElementById('publicKey').value = publicKeyText;
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+  </footer>
 
-                        // Dynamically replace placeholders in the instruction
-                        document.getElementById('privateKeyDisplay').textContent = privateKeyText;
-                        document.getElementById('publicKeyDisplay').textContent = publicKeyText;
-                    }
-                };
-            })();
+  <!-- LIBSODIUM -->
+  <script src="../../libsodium.js-master/dist/browsers/sodium.js" async></script>
 
-            function copyToClipboard(elementId) {
-                const copyText = document.getElementById(elementId);
-                copyText.select();
-                document.execCommand("copy");
-                alert("Copied!");
+  <!-- SCRIPT LOGIC -->
+  <script>
+    (function () {
+      /* Attendre que libsodium soit prêt */
+      function getSodium(timeoutMs = 8000) {
+        return new Promise((resolve, reject) => {
+          const start = Date.now();
+
+          function readyResolve(s) {
+            if (s && typeof s.ready?.then === "function") {
+              s.ready.then(() => resolve(s)).catch(reject);
+            } else if (s && typeof s.crypto_box_keypair === "function") {
+              resolve(s);
+            } else {
+              const poll = setInterval(() => {
+                if (s && typeof s.crypto_box_keypair === "function") {
+                  clearInterval(poll);
+                  resolve(s);
+                } else if (Date.now() - start > timeoutMs) {
+                  clearInterval(poll);
+                  reject(new Error("libsodium not ready (timeout)."));
+                }
+              }, 50);
             }
-        </script>
-        <script src="../../libsodium.js-master/dist/browsers/sodium.js"
-                async></script>
+          }
 
+          if (window.sodium) {
+            readyResolve(window.sodium);
+            return;
+          }
+
+          const pollExist = setInterval(() => {
+            if (window.sodium) {
+              clearInterval(pollExist);
+              readyResolve(window.sodium);
+            } else if (Date.now() - start > timeoutMs) {
+              clearInterval(pollExist);
+              reject(new Error("libsodium not loaded."));
+            }
+          }, 50);
+        });
+      }
+
+      /* Copier le contenu d'un champ */
+      function copyToClipboardById(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const value = el.value ?? el.textContent ?? "";
+        navigator.clipboard.writeText(value).then(
+          () => alert("Copied!"),
+          (err) => {
+            console.error("Clipboard error:", err);
+            alert("Failed to copy.");
+          }
+        );
+      }
+
+      /* DOM prêt */
+      document.addEventListener("DOMContentLoaded", async () => {
+        const privateKeyTextarea = document.getElementById("privateKey");
+        const publicKeyTextarea = document.getElementById("publicKey");
+        const privateKeyDisplay = document.getElementById("privateKeyDisplay");
+        const publicKeyDisplay = document.getElementById("publicKeyDisplay");
+
+        if (!privateKeyTextarea || !publicKeyTextarea) {
+          console.error("Missing key textarea elements in DOM.");
+          return;
+        }
+
+        try {
+          const sodium = await getSodium();
+
+          // Génère la paire de clés
+          const keyPair = sodium.crypto_box_keypair();
+          const privateKeyBase64 = sodium.to_base64(keyPair.privateKey);
+          const publicKeyBase64 = sodium.to_base64(keyPair.publicKey);
+
+          // Affiche dans les champs
+          privateKeyTextarea.value = privateKeyBase64;
+          publicKeyTextarea.value = publicKeyBase64;
+
+          // Remplace dans le bloc <pre>
+          if (privateKeyDisplay) privateKeyDisplay.textContent = privateKeyBase64;
+          if (publicKeyDisplay) publicKeyDisplay.textContent = publicKeyBase64;
+
+        } catch (err) {
+          console.error("Key generation error:", err);
+          alert("Encryption library failed to load or initialize.");
+          return;
+        }
+
+        // Boutons "Copy"
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const target = btn.getAttribute("data-copy-target");
+            if (target) copyToClipboardById(target);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
-
 </html>

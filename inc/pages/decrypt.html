@@ -2,156 +2,262 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet"
-          href="../style.css">
-    <script src="../../libsodium.js-master/dist/browsers/sodium.js"
-            async></script>
-    <script src="../keys.js"
-            async></script>
-    <script src="../script.js"
-            async></script>
-    <title>D-Crypt | Decrypt</title>
+  <meta charset="UTF-8">
+  <title>D-Crypt | Decrypt</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- Scripts externes en ordre correct -->
+  <script src="../../libsodium.js-master/dist/browsers/sodium.js" defer></script>
+  <script src="../keys.js" defer></script>
+  <script src="../contacts.js" defer></script>
+  <script src="../script.js" defer></script>
 </head>
 
 <body>
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <button id="menu-toggle" aria-label="Open menu">☰</button>
+      <nav>
+        <ul id="menu">
+          <li><a href="../../index.html">Encrypt</a></li>
+          <li><a href="decrypt.html" class="active">Decrypt</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gen-keys.html">Keys generation</a></li>
+          <li><a href="addContact.html">Manage contacts</a></li>
+          <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <header>
-        <div class="d-crypt">D-Crypt <span class="version">v.1.0</span></div>
-        <nav class="responsive">
-            <span class="icon"
-                  onclick="toggleMenu()">☰</span>
-            <ul>
-                <li><a href="../../index.html">Encrypt</a></li>
-                <li><a href="decrypt.html">Decrypt</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="gen-keys.html">Generate new keys</a></li>
-                <li><a href="addContact.html">Add a contact</a></li>
-                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
-            </ul>
-        </nav>
-    </header>
+  <main class="content">
+    <section id="decryptMessageSection">
+      <h1>Decrypt a Message</h1>
+      <form id="messageForm" novalidate>
+        <div class="form-group">
+          <label for="keyType">Decrypt with:</label>
+          <select id="keyType" required>
+            <option value="self">My Key</option>
+            <option value="global">Global Key</option>
+          </select>
+        </div>
 
-    <main class="content">
-        <section id="decryptMessageSection">
-            <h1>Decrypt a Message</h1>
-            <form id="messageForm">
-                <label for="keyType">Decrypt with:</label>
-                <select id="keyType">
-                    <option value="self">My Key</option>
-                    <option value="global">Global Key</option>
-                </select>
-                <br><br>
-                <label for="messageInput">Message:</label>
-                <textarea id="messageInput"
-                          rows="4"
-                          cols="50"></textarea>
-                <button id="decryptButton"
-                        type="button">Decrypt</button>
-            </form>
-        </section>
+        <div class="form-group">
+          <label for="messageInput">Encrypted Message</label>
+          <textarea id="messageInput" rows="4" placeholder="Paste the encrypted text here..." required></textarea>
+        </div>
 
-        <section id="decryptedContent">
-            <p id="decryptedMessage"></p>
-            <div id="downloadLink"
-                 style="margin-top: 20px;"></div>
-        </section>
-    </main>
+        <button id="decryptButton" type="submit">Decrypt</button>
+      </form>
+    </section>
 
-    <script>
-        window.sodium = {
-            onload: function (sodium) {
-                setupDecrypt(sodium);
-            }
-        };
+    <section id="decryptedContent" class="hidden">
+      <h2>Decryption Result</h2>
+      <div id="decryptedMessage" class="decrypted-message"></div>
+      <div id="downloadLink" class="download-section"></div>
+    </section>
 
-        function setupDecrypt(sodium) {
-            document.getElementById('decryptButton').addEventListener('click', function () {
-                const messageInput = document.getElementById('messageInput').value.trim();
-                const keyType = document.getElementById('keyType').value;
+    <section id="windowsUnlock" class="unlock-section">
+      <h2>🔓 Windows blocks my archived file, how to unlock?</h2>
 
-                if (messageInput === "") {
-                    alert('Please enter some encrypted base64 text to decrypt.');
-                    return;
-                }
+      <p class="intro-text">
+        Windows may automatically block files downloaded from the Internet — 
+        especially archives containing code or cryptographic keys.  
+        This is a security feature, but it can prevent you from opening or extracting the archive.
+      </p>
 
-                // Add delay before decrypting
-                setTimeout(() => {
-                    // Detect file type tags
-                    const match = messageInput.match(/^\[(png|jpg|pdf|zip)\](.*)\[\/\1\]$/);
-                    if (match) {
-                        const fileType = match[1];
-                        const encryptedBase64 = match[2];
-                        try {
-                            const encryptedMessage = sodium.from_base64(encryptedBase64);
-                            const decryptedBytes = decryptMessage(sodium, encryptedMessage, keyType);
-                            saveAndDownloadFile(decryptedBytes, fileType);
-                        } catch (error) {
-                            console.error("Decryption failed:", error);
-                            alert("Decryption failed: " + error.message);
-                        }
-                    } else {
-                        // Handle as a text message
-                        try {
-                            const encryptedMessage = sodium.from_base64(messageInput);
-                            const decryptedMessage = decryptTextMessage(sodium, encryptedMessage, keyType);
-                            document.getElementById('decryptedMessage').innerHTML = `<h4>Decrypted Message:</h4>${decryptedMessage}`;
-                        } catch (error) {
-                            console.error("Decryption failed:", error);
-                            alert("Decryption failed: " + error.message);
-                        }
-                    }
-                }, 500); // 0.5s delay
-            });
+      <div class="steps-container">
+        <h3>Follow these steps to unblock your file:</h3>
+        <ol class="steps-list">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">
+              Right-click on the <strong>.zip</strong> or <strong>.txt</strong> file you downloaded.
+            </span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">Select <strong>Properties</strong> from the context menu.</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">
+              At the bottom of the window, you should see a message like:<br>
+              <em>"This file came from another computer and might be blocked to help protect this computer."</em>
+            </span>
+          </li>
+          <li>
+            <span class="step-number">4</span>
+            <span class="step-text">Check the box labeled <strong>Unblock</strong>.</span>
+          </li>
+          <li>
+            <span class="step-number">5</span>
+            <span class="step-text">Click <strong>OK</strong> to apply changes.</span>
+          </li>
+          <li>
+            <span class="step-number">6</span>
+            <span class="step-text">You will now be able to extract or open the file.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+      <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+  </footer>
+
+  <script>
+
+    // inc/decrypt.js
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const form = document.getElementById('messageForm');
+  const decryptButton = document.getElementById('decryptButton');
+  const messageInput = document.getElementById('messageInput');
+  const keyTypeSelect = document.getElementById('keyType');
+  const decryptedContent = document.getElementById('decryptedContent');
+  const decryptedMessage = document.getElementById('decryptedMessage');
+  const downloadLinkDiv = document.getElementById('downloadLink');
+
+  // Attendre libsodium
+  try {
+    await waitForSodium();
+  } catch (err) {
+    console.error(err);
+    alert('Failed to load encryption library.');
+    return;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const encryptedText = messageInput.value.trim();
+    const keyType = keyTypeSelect.value;
+
+    if (!encryptedText) {
+      alert('Please paste an encrypted message to decrypt.');
+      return;
+    }
+
+    decryptButton.disabled = true;
+    decryptButton.textContent = 'Decrypting...';
+
+    try {
+      // Détection du type de message : fichier ou texte
+      const fileMatch = encryptedText.match(/^\[(png|jpg|pdf|zip)\](.*)\[\/\1\]$/);
+
+      if (fileMatch) {
+        // Fichier chiffré
+        const fileType = fileMatch[1];
+        const encryptedBase64 = fileMatch[2];
+        const encryptedBytes = sodium.from_base64(encryptedBase64);
+
+        const decryptedBytes = decryptMessage(sodium, encryptedBytes, keyType);
+        showDownloadLink(decryptedBytes, fileType);
+
+      } else {
+        // Message texte chiffré
+        const encryptedBytes = sodium.from_base64(encryptedText);
+        const decryptedText = decryptTextMessage(sodium, encryptedBytes, keyType);
+        showDecryptedText(decryptedText);
+      }
+
+    } catch (err) {
+      console.error('Decryption error:', err);
+      alert('Decryption failed: ' + err.message);
+    } finally {
+      decryptButton.disabled = false;
+      decryptButton.textContent = 'Decrypt';
+    }
+  });
+
+  /* Déchiffre des données binaires (fichier) */
+  function decryptMessage(sodium, encryptedMessage, keyType) {
+    const privateKey = sodium.from_base64(keys[keyType].privateKeyBase64);
+    const publicKey = sodium.from_base64(keys[keyType].publicKeyBase64);
+
+    return sodium.crypto_box_seal_open(encryptedMessage, publicKey, privateKey);
+  }
+
+  /* Déchiffre un message texte */
+  function decryptTextMessage(sodium, encryptedMessage, keyType) {
+    const privateKey = sodium.from_base64(keys[keyType].privateKeyBase64);
+    const publicKey = sodium.from_base64(keys[keyType].publicKeyBase64);
+
+    const decrypted = sodium.crypto_box_seal_open(encryptedMessage, publicKey, privateKey);
+    return new TextDecoder().decode(decrypted);
+  }
+
+  /* Affiche le message déchiffré dans la zone résultat */
+  function showDecryptedText(text) {
+    decryptedMessage.textContent = text;
+    downloadLinkDiv.innerHTML = '';
+    decryptedContent.classList.remove('hidden');
+  }
+
+  /* Crée un lien de téléchargement pour un fichier déchiffré */
+  function showDownloadLink(data, fileType) {
+  const mimeTypes = {
+    png: 'image/png',
+    jpg: 'image/jpeg',
+    pdf: 'application/pdf',
+    zip: 'application/zip',
+  };
+
+  const mimeType = mimeTypes[fileType] || 'application/octet-stream';
+  const blob = new Blob([data], { type: mimeType });
+  const objectURL = URL.createObjectURL(blob);
+
+  const timestamp = Date.now();
+  const filename = `decrypted_${timestamp}.${fileType}`;
+
+  // Nettoyage avant affichage
+  downloadLinkDiv.innerHTML = '';
+  decryptedMessage.innerHTML = '';
+
+  // === Lien de téléchargement ===
+  const link = document.createElement('a');
+  link.href = objectURL;
+  link.download = filename;
+  link.textContent = `Download ${fileType.toUpperCase()}`;
+  link.className = 'download-link'; // optionnel pour le style
+  downloadLinkDiv.appendChild(link);
+
+  // === Indiquer le type de fichier ===
+  const fileInfo = document.createElement('p');
+  fileInfo.className = 'file-info';
+  fileInfo.textContent = `Decrypted file type: ${fileType.toUpperCase()}`;
+  decryptedMessage.appendChild(fileInfo);
+
+  // Afficher la section de résultats
+  decryptedContent.classList.remove('hidden');
+
+  // Libère la mémoire après téléchargement
+  link.addEventListener('click', () => {
+    setTimeout(() => URL.revokeObjectURL(objectURL), 1000);
+  });
+}
+
+  /* Vérifie que sodium est bien chargé */
+  function waitForSodium(timeout = 5000) {
+    return new Promise((resolve, reject) => {
+      const start = Date.now();
+      const check = setInterval(() => {
+        if (window.sodium) {
+          clearInterval(check);
+          resolve(window.sodium);
+        } else if (Date.now() - start > timeout) {
+          clearInterval(check);
+          reject(new Error('libsodium failed to load.'));
         }
+      }, 50);
+    });
+  }
+});
 
-        function decryptMessage(sodium, encryptedMessage, keyType) {
-            const privateKey = sodium.from_base64(keys[keyType].privateKeyBase64);
-            const publicKey = sodium.from_base64(keys[keyType].publicKeyBase64);
-            const decryptedMessage = sodium.crypto_box_seal_open(encryptedMessage, publicKey, privateKey);
-            return new Uint8Array(decryptedMessage);
-        }
-
-        function decryptTextMessage(sodium, encryptedMessage, keyType) {
-            const privateKey = sodium.from_base64(keys[keyType].privateKeyBase64);
-            const publicKey = sodium.from_base64(keys[keyType].publicKeyBase64);
-            const decryptedMessage = sodium.crypto_box_seal_open(encryptedMessage, publicKey, privateKey);
-            return new TextDecoder().decode(decryptedMessage);
-        }
-
-        function saveAndDownloadFile(data, fileType) {
-            const mimeType = {
-                'png': 'image/png',
-                'jpg': 'image/jpeg',
-                'pdf': 'application/pdf',
-                'zip': 'application/zip'
-            }[fileType];
-
-            const blob = new Blob([data], { type: mimeType });
-
-            // Create a unique filename using a timestamp
-            const timestamp = new Date().getTime();
-            const filename = `decrypted_file_${timestamp}.${fileType}`;
-
-            // Create a download link
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.textContent = `Download Decrypted ${fileType.toUpperCase()}`;
-            link.className = 'download-link';
-
-            // Update the download section
-            const downloadLinkDiv = document.getElementById('downloadLink');
-            downloadLinkDiv.innerHTML = '';
-            downloadLinkDiv.appendChild(link);
-
-            // Optional: Add an instruction message
-            const instruction = document.createElement('p');
-            instruction.innerHTML = 'Click on the link above to download the decrypted file.<br>If it is a ZIP file, it might take a while. Please wait for the save prompt.';
-            downloadLinkDiv.appendChild(instruction);
-        }
-    </script>
-
+  </script>
 </body>
-
 </html>

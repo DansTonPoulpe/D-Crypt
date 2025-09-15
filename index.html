@@ -3,172 +3,263 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet"
-        href="inc/style.css" />
-  <script src="libsodium.js-master/dist/browsers/sodium.js"
-          async></script>
-  <script src="inc/contacts.js"
-          async></script>
-  <script src="inc/script.js"
-          async></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>D-Crypt | Encrypt</title>
+  <link rel="stylesheet" href="inc/style.css" />
+
+  <!-- Scripts externes -->
+  <script src="inc/script.js" defer></script>
 </head>
 
 <body>
+  <!-- HEADER -->
   <header>
-    <div class="d-crypt">
-      D-Crypt
-      <span class="version">v.1.0</span>
-    </div>
-    <nav class="responsive">
-      <span class="icon"
-            onclick="toggleMenu()">☰</span>
-      <ul>
+  <div class="container">
+    <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+    <button id="menu-toggle" aria-label="Open menu">☰</button>
+    <nav>
+      <ul id="menu">
         <li><a href="index.html">Encrypt</a></li>
         <li><a href="inc/pages/decrypt.html">Decrypt</a></li>
         <li><a href="inc/pages/about.html">About</a></li>
-        <li><a href="inc/pages/gen-keys.html">Generate new keys</a></li>
-        <li><a href="inc/pages/addContact.html">Add a contact</a></li>
+        <li><a href="inc/pages/gen-keys.html">Keys generation</a></li>
+        <li><a href="inc/pages/addContact.html">Manage contacts</a></li>
         <li><a href="inc/pages/duplication.html">Duplicate D-Crypt</a></li>
       </ul>
     </nav>
-  </header>
+  </div>
+</header>
 
+  <!-- MAIN CONTENT -->
   <main class="content">
-    <section id="encryptTextSection">
-      <h1>Encrypt a Message or a File</h1>
-      <form id="textInputForm">
-        <label for="contactSelect">Select a contact:</label>
-        <select id="contactSelect"></select>
-        <label for="textInput">Enter Text:</label>
-        <textarea id="textInput"
-                  rows="4"
-                  cols="50"></textarea>
-        <button type="button"
-                id="encryptTextButton">Encrypt Text</button>
-      </form>
-    </section>
-    <br />
-    <br />
-    <section id="encryptFileSection">
-      <form id="uploadForm"
-            enctype="multipart/form-data">
-        <label for="contactSelectFile">Select a contact:</label>
-        <select id="contactSelectFile"></select>
-        <label for="fileInput">Select a file:</label>
-        <input type="file"
-               id="fileInput"
-               name="file"
-               required />
-        <button type="submit">Upload and Encrypt</button>
+    <section>
+      <h1>Encrypt a Message</h1>
+      <form id="textInputForm" novalidate>
+        <div>
+          <label for="contactSelect">Select a Contact</label>
+          <select id="contactSelect" required>
+            <option value="">-- Select Contact --</option>
+          </select>
+        </div>
+        <div>
+          <label for="textInput">Enter Text</label>
+          <textarea id="textInput" rows="4" placeholder="Type your message..." required></textarea>
+        </div>
+        <button type="button" id="encryptTextButton">Encrypt Text</button>
       </form>
     </section>
 
-    <section id="resultContainer"></section>
+    <section>
+      <h2>Encrypt a File</h2>
+      <form id="uploadForm" enctype="multipart/form-data" novalidate>
+        <div>
+          <label for="contactSelectFile">Select a Contact</label>
+          <select id="contactSelectFile" required>
+            <option value="">-- Select Contact --</option>
+          </select>
+        </div>
+        <div>
+          <label for="fileInput">Choose File</label>
+          <input type="file" id="fileInput" name="file" required>
+        </div>
+        <button type="submit" id="encryptFileButton">Upload & Encrypt</button>
+      </form>
+    </section>
+
+    <section id="resultContainer">
+      <h3>Encrypted Result:</h3>
+      <div class="result-actions">
+        <button id="copyButton">Copy to Clipboard</button>
+        <button id="clearResultButton" class="secondary-button">Clear</button>
+      </div>
+      <pre id="encryptedText"></pre>
+    </section>
   </main>
 
-  <script>
-    window.sodium = {
-      onload: function (sodium) {
-        setupEncryption(sodium)
-      },
-    }
+  <!-- FOOTER -->
+  <footer>
+      <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+  </footer>
 
-    function setupEncryption(sodium) {
-      const resultContainer = document.getElementById("resultContainer");
+  <!-- SCRIPTS LOCAUX -->
+  <script src="libsodium.js-master/dist/browsers/sodium.js" defer></script>
+  <script src="inc/contacts.js" defer></script>
+  <script src="inc/script.js" defer></script>
 
-      document.getElementById("encryptTextButton").addEventListener("click", function () {
-        const text = document.getElementById("textInput").value;
-        const selectedKey = document.getElementById("contactSelect").value;
+  <!-- JS PRINCIPAL -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', async () => {
 
-        if (text.trim() === "" || !selectedKey) {
-          alert("Please enter some text and select a contact.");
-          return;
-        }
+      /** UTILITAIRE SELECTEUR RAPIDE */
+      const $ = (sel) => document.querySelector(sel);
 
-        // Add delay before encrypting a message
-        setTimeout(() => {
-          const textBytes = new TextEncoder().encode(text);
-          const encryptedContent = encryptContent(sodium, textBytes, selectedKey);
-
-          resultContainer.innerHTML = `
-                  <h4>Encrypted result:</h4>
-                  <button id="copyButton">Copy to Clipboard</button>
-                  <p id="encryptedText">${encryptedContent}</p>
-              `;
-
-          document.getElementById("copyButton").addEventListener("click", function () {
-            copyToClipboard("encryptedText", "Encrypted text copied to clipboard!");
-          });
-        }, 500); // 0.5s delay
-      });
-
-      document.getElementById("uploadForm").addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
-        const selectedKey = document.getElementById("contactSelectFile").value;
-
-        if (!file || !selectedKey) {
-          alert("Please select a file and a contact.");
-          return;
-        }
-
-        // Add delay before encrypting a file
-        setTimeout(async () => {
-          const fileContent = await readFileAsArrayBuffer(file);
-          const fileType = file.name.split(".").pop().toLowerCase();
-          const encryptedContent = encryptContent(sodium, new Uint8Array(fileContent), selectedKey, fileType);
-
-          resultContainer.innerHTML = `
-                  <h4>Encrypted result:</h4>
-                  <button id="copyButton">Copy to Clipboard</button>
-                  <p id="encryptedText">${encryptedContent}</p>
-              `;
-
-          document.getElementById("copyButton").addEventListener("click", function () {
-            copyToClipboard("encryptedText", "Encrypted file content copied to clipboard!");
-          });
-        }, 500); // 0.5s delay
-      });
-    }
-
-    async function readFileAsArrayBuffer(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(file);
-      });
-    }
-
-    function encryptContent(sodium, content, publicKeyBase64, fileType) {
-      const publicKey = sodium.from_base64(publicKeyBase64);
-      const encryptedContent = sodium.crypto_box_seal(content, publicKey);
-      const base64EncryptedContent = sodium.to_base64(encryptedContent);
-
-      switch (fileType) {
-        case "png":
-          return "[png]" + base64EncryptedContent + "[/png]";
-        case "jpg":
-          return "[jpg]" + base64EncryptedContent + "[/jpg]";
-        case "pdf":
-          return "[pdf]" + base64EncryptedContent + "[/pdf]";
-        case "zip":
-          return "[zip]" + base64EncryptedContent + "[/zip]";
-        default:
-          return base64EncryptedContent;
+      /** ------------------------------
+       *  MENU BURGER
+       * ------------------------------ */
+      const toggle = $('#menu-toggle');
+      const menu = $('#menu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', () => {
+          menu.classList.toggle('show');
+        });
       }
-    }
 
-    function copyToClipboard(elementId, successMessage) {
-      const text = document.getElementById(elementId).innerText;
-      navigator.clipboard
-        .writeText(text)
-        .then(() => alert(successMessage))
-        .catch(err => console.error("Error copying text to clipboard", err));
-    }
+      /** ------------------------------
+       *  AFFICHER L'ANNEE DANS LE FOOTER
+       * ------------------------------ */
+      const yearSpan = $('#current-year');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+
+      /** ------------------------------
+       *  CHARGER LES CONTACTS DANS LES LISTES
+       * ------------------------------ */
+      function fetchContacts() {
+        if (typeof contactsData !== 'string') {
+          console.error('contacts.js not loaded or contactsData missing');
+          return;
+        }
+        const lines = contactsData.trim().split(/\r?\n/);
+        const contactSelect = $('#contactSelect');
+        const contactSelectFile = $('#contactSelectFile');
+
+        lines.forEach(line => {
+          if (line.trim()) {
+            const parts = line.trim().split(/\s+/);
+            const key = parts.pop(); // dernière partie = clé
+            const name = parts.join(' '); // tout le reste = nom
+            contactSelect.add(new Option(name, key));
+            contactSelectFile.add(new Option(name, key));
+          }
+        });
+      }
+      fetchContacts();
+
+      /** ------------------------------
+       *  TOAST SIMPLE
+       * ------------------------------ */
+      function showToast(message, isError = false) {
+        const toast = document.createElement('div');
+        toast.className = 'toast' + (isError ? ' error' : '');
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      }
+
+      /** ------------------------------
+       *  ATTENDRE LIBSODIUM
+       * ------------------------------ */
+      function waitForSodium(timeout = 5000) {
+        return new Promise((resolve, reject) => {
+          const start = Date.now();
+          const check = setInterval(() => {
+            if (window.sodium) {
+              clearInterval(check);
+              resolve(window.sodium);
+            } else if (Date.now() - start > timeout) {
+              clearInterval(check);
+              reject(new Error('libsodium not loaded'));
+            }
+          }, 50);
+        });
+      }
+
+      const sodium = await waitForSodium().catch(err => {
+        showToast('Encryption library failed to load!', true);
+        console.error(err);
+      });
+      if (!sodium) return;
+
+      /** ------------------------------
+       *  CHIFFRER DU TEXTE
+       * ------------------------------ */
+      $('#encryptTextButton').addEventListener('click', () => {
+        const text = $('#textInput').value;
+        const contact = $('#contactSelect').value;
+
+        if (!contact) return showToast('Please select a contact.', true);
+        if (!text.trim()) return showToast('Text cannot be empty.', true);
+
+        try {
+          const data = new TextEncoder().encode(text);
+          const encrypted = encryptContent(sodium, data, contact);
+          showResult(encrypted);
+        } catch (err) {
+          showToast('Error during encryption.', true);
+          console.error(err);
+        }
+      });
+
+      /** ------------------------------
+       *  CHIFFRER UN FICHIER
+       * ------------------------------ */
+      $('#uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const file = $('#fileInput').files[0];
+        const contact = $('#contactSelectFile').value;
+
+        if (!contact) return showToast('Please select a contact.', true);
+        if (!file) return showToast('Please select a file.', true);
+        if (file.size === 0) return showToast('File is empty.', true);
+
+        try {
+          const data = await readFileAsArrayBuffer(file);
+          const ext = file.name.split('.').pop().toLowerCase();
+          const encrypted = encryptContent(sodium, data, contact, ext);
+          showResult(encrypted);
+        } catch (err) {
+          showToast('Error during file encryption.', true);
+          console.error(err);
+        }
+      });
+
+      /** ------------------------------
+       *  FONCTIONS OUTILS
+       * ------------------------------ */
+      function encryptContent(sodium, data, keyB64, fileType = '') {
+        const publicKey = sodium.from_base64(keyB64);
+        const encrypted = sodium.crypto_box_seal(data, publicKey);
+        let base64 = sodium.to_base64(encrypted);
+        const tags = { png: '[png]', jpg: '[jpg]', pdf: '[pdf]', zip: '[zip]' };
+        if (tags[fileType]) {
+          base64 = tags[fileType] + base64 + tags[fileType].replace('[', '[/');
+        }
+        return base64;
+      }
+
+      function readFileAsArrayBuffer(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(new Uint8Array(reader.result));
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      function showResult(content) {
+        $('#encryptedText').textContent = content;
+        $('#resultContainer').style.display = 'flex';
+      }
+
+      function clearResult() {
+        $('#encryptedText').textContent = '';
+        $('#resultContainer').style.display = 'none';
+      }
+
+      $('#copyButton').addEventListener('click', async () => {
+        try {
+          const text = $('#encryptedText').textContent;
+          await navigator.clipboard.writeText(text);
+          showToast('Copied to clipboard!');
+        } catch {
+          showToast('Failed to copy!', true);
+        }
+      });
+
+      $('#clearResultButton').addEventListener('click', clearResult);
+    });
   </script>
 </body>
-
 </html>

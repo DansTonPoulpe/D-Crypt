@@ -2,178 +2,151 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="../style.css" />
-    <script src="script.js"
-            async></script>
-    <title>D-Crypt | About</title>
-    <style>
-        .users {
-            width: 60%;
-        }
+  <meta charset="UTF-8">
+  <title>D-Crypt | About</title>
+  <link rel="stylesheet" href="../style.css">
 
-        .personas {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            flex-wrap: wrap;
-        }
-
-        .personas section {
-            flex: 1 1 25%;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .svg {
-            margin: 0 auto;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .personas section {
-                flex: 1 1 50%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .personas section {
-                flex: 1 1 100%;
-            }
-        }
-    </style>
+  <!-- Scripts externes -->
+  <script src="../script.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <div class="d-crypt">
-            D-Crypt
-            <span class="version">v.1.0</span>
-        </div>
-        <nav class="responsive">
-            <span class="icon"
-                  onclick="toggleMenu()">☰</span>
-            <ul>
-                <li><a href="../../index.html">Encrypt</a></li>
-                <li><a href="decrypt.html">Decrypt</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="gen-keys.html">Generate new keys</a></li>
-                <li><a href="addContact.html">Add a contact</a></li>
-                <li><a href="duplication.html">Duplicate D-Crypt</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="content">
-        <h1>ABOUT</h1>
-
-        <div class="about">
-            <p>Made by: DTP</p>
-            <p>Last update: 2024-10-14</p>
-            <p>
-                Github:
-                <a href="https://github.com/DansTonPoulpe/D-Crypt">link to project</a>
-            </p>
-        </div>
-
-        <div class="support">
-            <h3 style="text-align: center">
-                You like D-Crypt and want to help ?
-                <br />
-                You can donate us to the following cryptocurrency
-            </h3>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>Bitcoin</td>
-                    <td id="btc">bc1qcrhvdaldr0h6rmm3d9v3rajza57s6aa389c3nj</td>
-                    <td><button onclick="copyToClipboard('btc')">Copy</button></td>
-                </tr>
-                <tr>
-                    <td>Etherum</td>
-                    <td id="eth">0x2982C0E6FAF750059a47E6872139eCfb088D1273</td>
-                    <td><button onclick="copyToClipboard('eth')">Copy</button></td>
-                </tr>
-                <tr>
-                    <td>Ripple XRP</td>
-                    <td id="xrp">rEgFpi7oy9Eaej5J5bqafjty71Qn6L5Mvy</td>
-                    <td><button onclick="copyToClipboard('xrp')">Copy</button></td>
-                </tr>
-            </table>
-
-            <div style="margin-top: 20px; font-weight: bold;">
-                <p style="text-decoration: dashed;">
-                    For even more privacy, WE HIGHLY RECOMMAND YOU TO USE THIS PROGRAM WITH TAILS OS, you can check
-                    their website
-                    to know more about it.
-                <div style="text-align: center; background-color: blueviolet;"><a href="https://tails.net/index.en.html"
-                       target="_blank">&nbsp;<img src="https://tails.net/lib/logo.svg"
-                             alt="Tails logo"></a></div>
-                </p>
-            </div>
-
-            <section class="users">
-                <h1>Who uses Tails</h1>
-
-                <div class="personas">
-
-                    <section>
-                        <img alt="activist"
-                             class="svg"
-                             height="213"
-                             src="https://tails.net/index/activist.svg"
-                             width="213">
-                        <p><span class="persona">Activists</span> use Tails to protect their identities, avoid
-                            censorship, and communicate securely.</p>
-                    </section>
-
-                    <section>
-                        <img alt="journalist"
-                             class="svg"
-                             height="213"
-                             src="https://tails.net/index/journalist.svg"
-                             width="213">
-                        <p><span class="persona">Journalists and sources</span> use Tails to share sensitive information
-                            and access the Internet safely.</p>
-                    </section>
-
-                    <section>
-                        <img alt="survivor"
-                             class="svg"
-                             height="213"
-                             src="https://tails.net/index/survivor.svg"
-                             width="213">
-                        <p><span class="persona">Domestic violence survivors</span> use Tails to evade surveillance and
-                            ensure privacy at home.</p>
-                    </section>
-
-                    <section>
-                        <img alt="you"
-                             class="svg"
-                             height="213"
-                             src="https://tails.net/index/you.svg"
-                             width="213">
-                        <p><span class="persona">You</span> whenever you need extra privacy in this digital age.</p>
-                    </section>
-
-                </div>
-            </section>
-
-            <script>
-                function copyToClipboard(elementId) {
-                    const copyText = document.getElementById(elementId).innerText
-                    navigator.clipboard.writeText(copyText).then(() => {
-                        alert("Address copied to clipboard!")
-                    })
-                }
-            </script>
-        </div>
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <button id="menu-toggle" aria-label="Open menu">☰</button>
+      <nav>
+        <ul id="menu">
+          <li><a href="../../index.html">Encrypt</a></li>
+          <li><a href="decrypt.html">Decrypt</a></li>
+          <li><a href="about.html" class="active">About</a></li>
+          <li><a href="gen-keys.html">Keys generation</a></li>
+          <li><a href="addContact.html">Manage contacts</a></li>
+          <li><a href="duplication.html">Duplicate D-Crypt</a></li>
+        </ul>
+      </nav>
     </div>
-</body>
+  </header>
 
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- About info -->
+    <section class="about">
+      <h1>About</h1>
+      <p><strong>Made by:</strong> DTP</p>
+      <p><strong>Last update:</strong> 2025, september 15th</p>
+      <p>
+        <strong>Github:</strong>
+        <a href="https://github.com/DansTonPoulpe/D-Crypt" target="_blank">Link to project</a>
+      </p>
+    </section>
+
+    <!-- Support / Donate section -->
+    <section class="support">
+      <h2>Support D-Crypt</h2>
+      <p class="support-text">
+        You like D-Crypt and want to help?<br>
+        You can donate using the following cryptocurrencies:
+      </p>
+
+      <div class="donations">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bitcoin</td>
+              <td id="btc">bc1qcrhvdaldr0h6rmm3d9v3rajza57s6aa389c3nj</td>
+              <td><button class="copy-btn" data-copy-target="btc">Copy</button></td>
+            </tr>
+            <tr>
+              <td>Ethereum</td>
+              <td id="eth">0x2982C0E6FAF750059a47E6872139eCfb088D1273</td>
+              <td><button class="copy-btn" data-copy-target="eth">Copy</button></td>
+            </tr>
+            <tr>
+              <td>Ripple XRP</td>
+              <td id="xrp">rEgFpi7oy9Eaej5J5bqafjty71Qn6L5Mvy</td>
+              <td><button class="copy-btn" data-copy-target="xrp">Copy</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tails-info">
+        <p>
+          For even more privacy, <strong>we highly recommend using D-Crypt with Tails OS</strong>.<br> 
+          Learn more on their official website:
+        </p>
+        <div class="tails-logo">
+          <a href="https://tails.net/index.en.html" target="_blank">
+            <img src="https://tails.net/lib/logo.svg" alt="Tails logo">
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who uses Tails section -->
+    <section class="users">
+      <h2>Who Uses Tails?</h2>
+      <div class="personas">
+        <div class="persona">
+          <img src="https://tails.net/index/activist.svg" alt="Activist">
+          <p><span>Activists</span> use Tails to protect their identities, avoid censorship, and communicate securely.</p>
+        </div>
+
+        <div class="persona">
+          <img src="https://tails.net/index/journalist.svg" alt="Journalist">
+          <p><span>Journalists and sources</span> use Tails to share sensitive information and access the Internet safely.</p>
+        </div>
+
+        <div class="persona">
+          <img src="https://tails.net/index/survivor.svg" alt="Domestic violence survivor">
+          <p><span>Domestic violence survivors</span> use Tails to evade surveillance and ensure privacy at home.</p>
+        </div>
+
+        <div class="persona">
+          <img src="https://tails.net/index/you.svg" alt="You">
+          <p><span>You</span> whenever you need extra privacy in this digital age.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+      <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const copyButtons = document.querySelectorAll('.copy-btn');
+
+      copyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-copy-target');
+          const targetElement = document.getElementById(targetId);
+
+          if (!targetElement) return;
+
+          const textToCopy = targetElement.textContent.trim();
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            alert('Address copied to clipboard!');
+          }).catch(err => {
+            console.error('Clipboard error:', err);
+            alert('Failed to copy address.');
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
 </html>
