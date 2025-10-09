@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>D-Crypt | Duplication</title>
   <link rel="stylesheet" href="../style.css" />
 
-  <!-- Scripts externes -->
+  <!-- External Scripts -->
   <script src="../../libsodium.js-master/dist/browsers/sodium.js" defer></script>
   <script src="../script.js" defer></script>
 </head>
@@ -16,7 +15,7 @@
   <!-- HEADER -->
   <header>
     <div class="container">
-      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <div class="logo">D-Crypt <span class="version">v1.2</span></div>
       <button id="menu-toggle" aria-label="Open menu">☰</button>
       <nav>
         <ul id="menu">
@@ -38,29 +37,72 @@
     <p>Follow these steps carefully to duplicate D-Crypt safely:</p>
 
     <ul class="duplication-steps">
-      <li>1. Click <strong>Copy</strong> below, then click <strong>Decrypt now</strong>.</li>
-      <li>2. Paste the copied content and decrypt it using the <strong>global key</strong>, then download the ZIP archive.</li>
-      <li>3. Make a copy of your entire D-Crypt folder.</li>
-      <li>4. In your D-Crypt copy, go to the <strong>inc</strong> folder and delete <code>contacts.js</code> and <code>keys.js</code>.</li>
-      <li>5. Extract the downloaded ZIP archive and move the fresh new <code>contacts.js</code> and <code>keys.js</code> files into the <strong>inc</strong> folder of your D-Crypt copy.</li>
-      <li>6. Delete the ZIP archive once extraction is complete.</li>
-      <li>7. You can now safely share this clean D-Crypt copy (e.g., via a USB drive) without your personal keys or contacts.</li>
+      <li>1. Make a full copy of your <strong>D-Crypt</strong> folder (for example, on a USB stick).</li>
+      <li>2. In the copied folder, go to <strong>inc</strong>.</li>
+      <li>3. Open <code>keys.js</code> and <code>contacts.js</code> in a text editor.</li>
+      <li>4. Replace <strong>all the content</strong> of each file with the corresponding text shown below.</li>
+      <li>5. Save the files and close the editor.</li>
+      <li>6. Your copied version is now clean and safe to share (it contains no personal keys or contacts).</li>
     </ul>
 
-    <!-- LOADING -->
-    <div id="loading" class="loading-animation">
-      <div class="spinner"></div>
-      <p>Loading...</p>
-    </div>
+    <hr>
 
-    <!-- COPY AREA -->
-    <div id="copyDiv" class="copy-area">
-      [zip]gWQg9EZjiLYmydUnq_wM6TjhAq_9SaRj_vd77hNgvD7AnxhlaaCFQvoH3ViiMOAk3NzCMB860ufVVnpZDVgGioi9X6Be9HepQ1TtsCWasogYVQVAAjZ2y-dnMrEZjUgUCbLbEtv7yH-vbyTxSz6eqdWTQPsCqOXVwTfgkrj8zJyJ2BZfzKg91Sk1gcCR7KAwz-YiWXWriQcp7papvGaTeGOB1e85Z_egB8Xq2dcHFkwzWs_BzHRN0u981Y6_AVehToT2SyOwLFg9n5tdVUK3lG9mMEB3_C-y8XgsAIEWGf97n4NDUBRE8-cHJ3Ax3aSg9gshSnDibG2cmuUcEuyF4muULDLT5oPVZRB8Bj5Sfh5UnavgqekxLMS1LVb_5WZTVqmrE6dUhb3eUbZrAp9OuQcBCojzkwHwGi2x9qGUuwXTKSH4sv0deNmFNq8FLywoj3AWmiWmN7z3mN_2XRbyeuRQcURGabhqpVRHttO4Ygi0kTRU33RbOF4EHTzaRpuEGwT4HTr8yFgtzidTGv5QYUv4geNify8Y6oM8PQzToiN4rtDXaP23SrigLnBMjDwEBdzTj69PX_ZMg8IH6WErirAlRlPVGpM2uoHsQOl8X68q6SI4i2BNhIihVXGlPxTj_qZJLVt381C8LErMadn5ZnKWilaJ9rMMxDNEdeBztEmtzDKAx9BqqHy9pdeni6oxmfP-8nD-nz3H-d7UejWR6qx9PuJy9-b64AYa19EwnO9Ks8sJ0re9N-S5hwS1hSHZNZBWk2aXmu3W5uGmd1NjLe6vEbUCYChOL84Jflfd7OEVgMmIrsmr7fPME3RBoj9xR7f88RSys9o_5QMmQgKxeLAg2L5RtVK7hUsu8dOsra5istsTJ4V2JmYZxp3qTuhXALiXw-hZKxDu2bPMrZ5sj809n0pEiWK8xPfG13BfiBVepZvf9LvS4o5rmIaRkqQvLVIT_xSBdjclLTG0eKwKg6xp3_tjGdBp8xseDFDjpwE[/zip]
-    </div>
+    <h2>keys.js content</h2>
+    <p>Open <code>inc/keys.js</code> and replace everything with this:</p>
+    <pre id="keysSnippet" class="code-block">
+const keys = {
+  self: {
+    privateKeyBase64: `PASTE_YOUR_PRIVATE_KEY_HERE`, // Change for your private Key
+    publicKeyBase64: `PASTE_YOUR_PUBLIC_KEY_HERE`, // Change for your public key
+  },
+  global: {
+    privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not change this line
+    publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not change this line
+  },
+};
+    </pre>
+    <button class="copy-btn" id="copyKeys">Copy keys.js content</button>
 
-    <!-- ACTION BUTTONS -->
-    <button class="copy-btn" onclick="copyContent()">Copy</button>
-    <a href="decrypt.html"><button class="copy-btn" style="margin-left:10px;">Decrypt now (global key)</button></a>
+    <hr>
+
+    <h2>contacts.js content</h2>
+    <p>Open <code>inc/contacts.js</code> and replace everything with this:</p>
+    <pre id="contactsSnippet" class="code-block">
+// ========================= D-Crypt Contacts List =========================
+//
+// Format: CONTACT_NAME PUBLIC_KEY
+//
+// Each contact must be written on a new line. Name and public key separated by a space.
+// Example:
+//   Alice 123abcPUBLICKEYEXAMPLE
+//   Bob anotherPUBLICKEYEXAMPLE
+//
+// CONTACT_NAME rules:
+//   - Use only letters, numbers, or underscores (_)
+//   - NO SPACES are allowed in names
+//   - Example of valid names: JohnDoe, My_Friend, Contact1
+//
+// The first two lines below are reserved:
+//   - Global → shared encryption key for everyone using D-Crypt
+//   - Myself → your own public key (used to encrypt things for yourself)
+//
+// To add more contacts:
+//   1. Copy a new line below "Myself".
+//   2. Replace CONTACT_NAME with their name.
+//   3. Replace PUBLIC_KEY with their real public key.
+//   4. Save the file.
+//
+// Do not remove the final backtick (`) or semicolon (;) below!
+// They are required for D-Crypt to read this file correctly.
+//
+// ========================================================================
+
+const contactsData = `
+Global PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A
+Myself PASTE_YOUR_PUBLIC_KEY_HERE
+
+`;</pre>
+    <button class="copy-btn" id="copyContacts">Copy contacts.js content</button>
   </main>
 
   <!-- FOOTER -->
@@ -70,46 +112,52 @@
 
   <!-- SCRIPT -->
   <script>
-    /**
-     * Copie le contenu complet dans le presse-papier
-     */
-    function copyContent() {
-      const content = document.getElementById('copyDiv').getAttribute('data-fulltext');
-      navigator.clipboard.writeText(content).then(function () {
-        alert('Content copied to clipboard!');
-      }, function (err) {
-        alert('Failed to copy: ' + err);
+    // Copy function
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      }).catch(() => {
+        alert("Failed to copy. Please copy manually.");
       });
     }
 
-    /**
-     * Affiche uniquement les 200 premiers caractères du contenu
-     * et stocke le texte complet dans un attribut data-fulltext
-     */
-    document.addEventListener('DOMContentLoaded', function () {
-      const copyDiv = document.getElementById('copyDiv');
-      const fullText = copyDiv.innerText.trim();
-
-      copyDiv.setAttribute('data-fulltext', fullText);
-
-      if (fullText.length > 200) {
-        copyDiv.innerText = fullText.substring(0, 200) + "...";
-      }
+    document.getElementById("copyKeys").addEventListener("click", () => {
+      copyToClipboard(document.getElementById("keysSnippet").innerText.trim());
     });
 
-    /**
-     * Simulation du chargement
-     */
-    window.addEventListener('load', function () {
-      document.getElementById('loading').style.display = 'none';
+    document.getElementById("copyContacts").addEventListener("click", () => {
+      copyToClipboard(document.getElementById("contactsSnippet").innerText.trim());
     });
 
-    /**
-     * Mettre à jour l'année automatiquement dans le footer
-     */
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('current-year').textContent = new Date().getFullYear();
+    // Update footer year
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("current-year").textContent = new Date().getFullYear();
     });
   </script>
+
+  <style>
+    .code-block {
+      background: #222;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      margin-bottom: 10px;
+    }
+    .copy-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .copy-btn:hover {
+      background: #0056b3;
+    }
+  </style>
 </body>
 </html>

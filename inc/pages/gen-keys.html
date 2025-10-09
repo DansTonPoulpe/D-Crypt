@@ -6,7 +6,7 @@
   <title>D-Crypt | Generate Keys</title>
   <link rel="stylesheet" href="../style.css">
 
-  <!-- Scripts externes -->
+  <!-- External Scripts -->
   <script src="../script.js" defer></script>
 </head>
 
@@ -14,7 +14,7 @@
   <!-- HEADER -->
   <header>
     <div class="container">
-      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <div class="logo">D-Crypt <span class="version">v1.2</span></div>
       <button id="menu-toggle" aria-label="Open menu">☰</button>
       <nav>
         <ul id="menu">
@@ -32,33 +32,37 @@
   <!-- MAIN CONTENT -->
   <main class="content">
     <section class="generate">
-        <h1>Generate New Keys</h1>
+      <h1>Generate New Encryption Keys</h1>
 
-        <p>
-          Open and edit the file <code>keys.js</code> in the folder <code>inc</code> with the following information:
-        </p>
+      <p>
+        Open the file <code>keys.js</code> located in the <code>inc</code> folder and edit it as follows:
+      </p>
 
-        <p>
-          Lines <strong>3</strong> and <strong>4</strong>: Replace the placeholders with your new <strong>private key</strong> and <strong>public key</strong>.<br>
-          ⚠️ <strong>Do not delete</strong> the backticks <code>`</code> around your keys — just replace the red part and save the file once you're done.
-        </p>
+      <p>
+        On <strong>lines 3</strong> and <strong>4</strong>, replace the placeholders with your new <strong>private key</strong> and <strong>public key</strong>.<br><br>
+        <strong>Important:</strong> Do <strong>not</strong> remove the backticks (<code>`</code>) around your keys, simply replace the red text and save the file.
+      </p>
 
-        <p>
-          If you made a mistake or erased something, copy and paste the entire file using the code below:
-        </p>
+      <br>
+      <p>
+        If you made an error or accidentally deleted something, you can restore the entire file using the code below:
+      </p>
 
-        <pre class="code-block">
+      <div class="code-container">
+        <pre class="code-block" id="codeExample">
 const keys = {
   self: {
-    privateKeyBase64: `<span id="privateKeyDisplay" class="red">PASTE_YOUR_PRIVATE_KEY_HERE</span>`, // Change for your private key
-    publicKeyBase64: `<span id="publicKeyDisplay" class="red">PASTE_YOUR_PUBLIC_KEY_HERE</span>` // Change for your public key
+    privateKeyBase64: `<span id="privateKeyDisplay" class="red">PASTE_YOUR_PRIVATE_KEY_HERE</span>`, // Replace with your private key
+    publicKeyBase64: `<span id="publicKeyDisplay" class="red">PASTE_YOUR_PUBLIC_KEY_HERE</span>` // Replace with your public key
   },
   global: {
-    privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not change this line
-    publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not change this line
+    privateKeyBase64: `no9ewLjqJpGhx3tyNpkIWWhJ1YOu6MDYzWhe8-tg7-E`, // Do not modify this line
+    publicKeyBase64: `PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A`, // Do not modify this line
   },
 }</pre>
-</section>
+        <button class="copy-btn" id="copyCodeBtn">Copy code</button>
+      </div>
+    </section>
 
     <!-- GENERATED KEYS DISPLAY -->
     <section class="generated-keys">
@@ -66,7 +70,8 @@ const keys = {
         <label for="privateKey"><strong>PRIVATE KEY</strong></label>
         <textarea id="privateKey" readonly></textarea>
         <button class="copy-btn" data-copy-target="privateKey">Copy</button>
-      </div> <br>
+      </div>
+      <br>
       <div class="key-group">
         <label for="publicKey"><strong>PUBLIC KEY</strong></label>
         <textarea id="publicKey" readonly></textarea>
@@ -86,16 +91,16 @@ const keys = {
   <!-- SCRIPT LOGIC -->
   <script>
     (function () {
-      /* Attendre que libsodium soit prêt */
+      // Wait for libsodium to be ready
       function getSodium(timeoutMs = 8000) {
         return new Promise((resolve, reject) => {
           const start = Date.now();
 
-          function readyResolve(s) {
-            if (s && typeof s.ready?.then === "function") {
-              s.ready.then(() => resolve(s)).catch(reject);
-            } else if (s && typeof s.crypto_box_keypair === "function") {
+          function checkReady(s) {
+            if (s && typeof s.crypto_box_keypair === "function") {
               resolve(s);
+            } else if (s && typeof s.ready?.then === "function") {
+              s.ready.then(() => resolve(s)).catch(reject);
             } else {
               const poll = setInterval(() => {
                 if (s && typeof s.crypto_box_keypair === "function") {
@@ -103,44 +108,44 @@ const keys = {
                   resolve(s);
                 } else if (Date.now() - start > timeoutMs) {
                   clearInterval(poll);
-                  reject(new Error("libsodium not ready (timeout)."));
+                  reject(new Error("libsodium failed to initialize (timeout)."));
                 }
               }, 50);
             }
           }
 
           if (window.sodium) {
-            readyResolve(window.sodium);
+            checkReady(window.sodium);
             return;
           }
 
           const pollExist = setInterval(() => {
             if (window.sodium) {
               clearInterval(pollExist);
-              readyResolve(window.sodium);
+              checkReady(window.sodium);
             } else if (Date.now() - start > timeoutMs) {
               clearInterval(pollExist);
-              reject(new Error("libsodium not loaded."));
+              reject(new Error("libsodium failed to load."));
             }
           }, 50);
         });
       }
 
-      /* Copier le contenu d'un champ */
+      // Copy text to clipboard by ID
       function copyToClipboardById(id) {
         const el = document.getElementById(id);
         if (!el) return;
         const value = el.value ?? el.textContent ?? "";
         navigator.clipboard.writeText(value).then(
-          () => alert("Copied!"),
+          () => alert("Copied to clipboard!"),
           (err) => {
             console.error("Clipboard error:", err);
-            alert("Failed to copy.");
+            alert("Failed to copy text.");
           }
         );
       }
 
-      /* DOM prêt */
+      // Initialize when DOM is ready
       document.addEventListener("DOMContentLoaded", async () => {
         const privateKeyTextarea = document.getElementById("privateKey");
         const publicKeyTextarea = document.getElementById("publicKey");
@@ -148,41 +153,78 @@ const keys = {
         const publicKeyDisplay = document.getElementById("publicKeyDisplay");
 
         if (!privateKeyTextarea || !publicKeyTextarea) {
-          console.error("Missing key textarea elements in DOM.");
+          console.error("Missing textarea elements in the DOM.");
           return;
         }
 
         try {
           const sodium = await getSodium();
 
-          // Génère la paire de clés
+          // Generate key pair
           const keyPair = sodium.crypto_box_keypair();
           const privateKeyBase64 = sodium.to_base64(keyPair.privateKey);
           const publicKeyBase64 = sodium.to_base64(keyPair.publicKey);
 
-          // Affiche dans les champs
+          // Display in textareas
           privateKeyTextarea.value = privateKeyBase64;
           publicKeyTextarea.value = publicKeyBase64;
 
-          // Remplace dans le bloc <pre>
+          // Update the example block dynamically
           if (privateKeyDisplay) privateKeyDisplay.textContent = privateKeyBase64;
           if (publicKeyDisplay) publicKeyDisplay.textContent = publicKeyBase64;
 
         } catch (err) {
           console.error("Key generation error:", err);
-          alert("Encryption library failed to load or initialize.");
+          alert("Failed to load or initialize the encryption library.");
           return;
         }
 
-        // Boutons "Copy"
-        document.querySelectorAll(".copy-btn").forEach((btn) => {
+        // Copy buttons for keys
+        document.querySelectorAll(".copy-btn[data-copy-target]").forEach((btn) => {
           btn.addEventListener("click", () => {
             const target = btn.getAttribute("data-copy-target");
             if (target) copyToClipboardById(target);
           });
         });
+
+        // Copy full code example
+        const copyCodeBtn = document.getElementById("copyCodeBtn");
+        copyCodeBtn.addEventListener("click", () => {
+          const codeBlock = document.getElementById("codeExample");
+          if (!codeBlock) return;
+          const text = codeBlock.innerText.trim();
+          navigator.clipboard.writeText(text).then(
+            () => alert("Code copied successfully!"),
+            () => alert("Failed to copy code.")
+          );
+        });
       });
     })();
   </script>
+
+  <style>
+    .code-container {
+      position: relative;
+    }
+
+    #copyCodeBtn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 12px;
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #copyCodeBtn:hover {
+      background: #f38470;
+      color: #fbedde;
+    }
+  </style>
 </body>
 </html>
