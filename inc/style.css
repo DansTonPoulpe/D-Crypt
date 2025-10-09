@@ -429,6 +429,16 @@ footer {
   font-size: 0.9rem;
 }
 
+.persona .TailsUsers {
+  color: #56347c;
+  font-weight: 600;
+  font-size: 22.5px;
+}
+
+.purple{
+  color: #56347c;
+}
+
 
 /* --- GENERATE KEYS PAGE --- */
 

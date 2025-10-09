@@ -6,7 +6,7 @@
   <title>D-Crypt | About</title>
   <link rel="stylesheet" href="../style.css">
 
-  <!-- Scripts externes -->
+  <!-- External Scripts -->
   <script src="../script.js" defer></script>
 </head>
 
@@ -14,7 +14,7 @@
   <!-- HEADER -->
   <header>
     <div class="container">
-      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <div class="logo">D-Crypt <span class="version">v1.2</span></div>
       <button id="menu-toggle" aria-label="Open menu">☰</button>
       <nav>
         <ul id="menu">
@@ -35,11 +35,11 @@
     <!-- About info -->
     <section class="about">
       <h1>About</h1>
-      <p><strong>Made by:</strong> DTP</p>
-      <p><strong>Last update:</strong> 2025, september 15th</p>
+      <p><strong>Developed by:</strong> DTP</p>
+      <p><strong>Last updated:</strong> October 9, 2025</p>
       <p>
-        <strong>Github:</strong>
-        <a href="https://github.com/DansTonPoulpe/D-Crypt" target="_blank">Link to project</a>
+        <strong>GitHub:</strong>
+        <a href="https://github.com/DansTonPoulpe/D-Crypt" target="_blank">View the project on GitHub</a>
       </p>
     </section>
 
@@ -47,15 +47,15 @@
     <section class="support">
       <h2>Support D-Crypt</h2>
       <p class="support-text">
-        You like D-Crypt and want to help?<br>
-        You can donate using the following cryptocurrencies:
+        Do you like D-Crypt and want to support its development?<br>
+        You can donate using any of the cryptocurrencies below:
       </p>
 
       <div class="donations">
         <table>
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Currency</th>
               <th>Address</th>
               <th></th>
             </tr>
@@ -72,7 +72,7 @@
               <td><button class="copy-btn" data-copy-target="eth">Copy</button></td>
             </tr>
             <tr>
-              <td>Ripple XRP</td>
+              <td>Ripple (XRP)</td>
               <td id="xrp">rEgFpi7oy9Eaej5J5bqafjty71Qn6L5Mvy</td>
               <td><button class="copy-btn" data-copy-target="xrp">Copy</button></td>
             </tr>
@@ -82,12 +82,12 @@
 
       <div class="tails-info">
         <p>
-          For even more privacy, <strong>we highly recommend using D-Crypt with Tails OS</strong>.<br> 
-          Learn more on their official website:
+          For maximum privacy, we highly recommend using <strong>D-Crypt with Tails OS</strong>.<br>
+          Learn more on the official Tails website:
         </p>
         <div class="tails-logo">
           <a href="https://tails.net/index.en.html" target="_blank">
-            <img src="https://tails.net/lib/logo.svg" alt="Tails logo">
+            <img src="../img/tails.svg" alt="Tails logo">
           </a>
         </div>
       </div>
@@ -95,26 +95,30 @@
 
     <!-- Who uses Tails section -->
     <section class="users">
-      <h2>Who Uses Tails?</h2>
+      <h2 class="purple">Who uses Tails?</h2>
       <div class="personas">
         <div class="persona">
-          <img src="https://tails.net/index/activist.svg" alt="Activist">
-          <p><span>Activists</span> use Tails to protect their identities, avoid censorship, and communicate securely.</p>
+          <img src="../img/activist.svg" alt="Activist">
+          <span class="TailsUsers">Activists</span>
+          <p>use Tails to hide their identities, avoid censorship, and communicate securely.</p>
         </div>
 
         <div class="persona">
-          <img src="https://tails.net/index/journalist.svg" alt="Journalist">
-          <p><span>Journalists and sources</span> use Tails to share sensitive information and access the Internet safely.</p>
+          <img src="../img/journalist.svg" alt="Journalist">
+          <span class="TailsUsers">Journalists and sources</span>
+          <p>use Tails to publish sensitive information and access the Internet from unsafe places.</p>
         </div>
 
         <div class="persona">
-          <img src="https://tails.net/index/survivor.svg" alt="Domestic violence survivor">
-          <p><span>Domestic violence survivors</span> use Tails to evade surveillance and ensure privacy at home.</p>
+          <img src="../img/survivor.svg" alt="Domestic violence survivor">
+          <span class="TailsUsers">Domestic violence survivors</span>
+          <p>use Tails to escape surveillance at home.</p>
         </div>
 
         <div class="persona">
-          <img src="https://tails.net/index/you.svg" alt="You">
-          <p><span>You</span> whenever you need extra privacy in this digital age.</p>
+          <img src="../img/you.svg" alt="You">
+          <span class="TailsUsers">You</span>
+          <p>whenever you need extra privacy in this digital world.</p>
         </div>
       </div>
     </section>
@@ -122,7 +126,7 @@
 
   <!-- FOOTER -->
   <footer>
-      <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+    <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
   </footer>
 
   <script>
@@ -133,7 +137,6 @@
         button.addEventListener('click', () => {
           const targetId = button.getAttribute('data-copy-target');
           const targetElement = document.getElementById(targetId);
-
           if (!targetElement) return;
 
           const textToCopy = targetElement.textContent.trim();
@@ -145,6 +148,9 @@
           });
         });
       });
+
+      // Update footer year automatically
+      document.getElementById('current-year').textContent = new Date().getFullYear();
     });
   </script>
 

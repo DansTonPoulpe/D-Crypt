@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>D-Crypt | Add a Contact</title>
+  <title>D-Crypt | Manage Contacts</title>
   <link rel="stylesheet" href="../style.css">
   <script src="../script.js" defer></script>
 </head>
@@ -12,7 +12,7 @@
   <!-- HEADER -->
   <header>
     <div class="container">
-      <div class="logo">D-Crypt <span class="version">v1.1</span></div>
+      <div class="logo">D-Crypt <span class="version">v1.2</span></div>
       <button id="menu-toggle" aria-label="Open menu">☰</button>
       <nav>
         <ul id="menu">
@@ -31,82 +31,106 @@
   <main class="content">
 
     <div class="add-contact-container">
-      <!-- Ajouter soi-même -->
+      <!-- Add yourself -->
       <section class="instruction-block">
         <h2>✱ How to add yourself as a contact</h2>
         <p>
-          For example, to encrypt your cryptocurrency wallet's passphrase or personal documents, a picture...
+          You can add yourself as a contact to encrypt private files or notes, for example, a password, wallet phrase,
+          personal photo, or any document you want to keep encrypted with your own public key.
         </p>
 
         <ol>
           <li>
-            Open the file named <strong>contacts.js</strong> in the <strong>inc</strong> folder using any text editor.
+            Open the file named <strong>contacts.js</strong>, located in the <strong>inc</strong> folder of your D-Crypt installation.
+            <br>Use any text editor (for example: Notepad, Notepad++, or VS Code).
           </li>
           <li>
-            Look for the line that says: <strong>Myself PASTE_YOUR_PUBLIC_KEY_HERE</strong>.
+            Find this line inside the file:
+            <br><code>Myself PASTE_YOUR_PUBLIC_KEY_HERE</code>
           </li>
           <li>
-            Replace <strong>PASTE_YOUR_PUBLIC_KEY_HERE</strong> with your public key.<br>
-            <u>You can find it in the <strong>keys.js</strong> file on line 4.</u>
+            Replace <strong>PASTE_YOUR_PUBLIC_KEY_HERE</strong> with your actual public key.
+            <br><u>You can find your public key inside the <strong>keys.js</strong> file, it is located on line 4, next to
+            <strong>publicKeyBase64</strong>.</u>
           </li>
-          <li>Save the file and close it.</li>
+          <li>
+            After replacing it, save the file and close your text editor.
+            <br><strong>Result:</strong> D-Crypt will now recognize you as a valid contact when encrypting files.
+          </li>
         </ol>
       </section>
 
-      <!-- Ajouter quelqu'un d'autre -->
+      <!-- Add another person -->
       <section class="instruction-block">
         <h2>✱ How to add someone else as a contact</h2>
 
+        <p>
+          You can add one or more people to your contact list to send them encrypted messages or files.  
+          Each contact must be written on a new line in the <strong>contacts.js</strong> file.
+        </p>
+
         <ol>
-          <li>Open the same <strong>contacts.js</strong> file using a text editor.</li>
           <li>
-            Under the line that says <strong>Myself</strong>, create a new line for each contact you want to add.
+            Open the <strong>contacts.js</strong> file (in the <strong>inc</strong> folder) using a text editor.
           </li>
           <li>
-            Write your contact's name (<u>letters, numbers, or underscores only : no spaces</u>), followed by a space,
-            then <strong>THEIR PUBLIC KEY</strong>.
-            Each contact should be on a new line.
+            Below the line that says <strong>Myself</strong>, create one new line per contact you want to add.
+          </li>
+          <li>
+            For each contact, write:
+            <br><strong>ContactName TheirPublicKey</strong>
+            <br><u>Important:</u> The contact’s name can contain only letters, numbers, or underscores (<code>_</code>) no spaces are allowed.
           </li>
           <li>Example:</li>
         </ol>
 
         <pre class="code-block">
-            const contactsData = `
-            Global PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A
-            Myself XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-            <span class="red bold">JohnDoe HIS_PUBLIC_KEY
-            JaneSmith HER_PUBLIC_KEY
-            ThirdContact_I_canUseUnderscores_but_no_spaces_in_name CONTACT_PUBLIC_KEY</span>
-            `;
-        </pre>
+const contactsData = `
+Global PZ_-W-Kb2neUuzqQAMxyWuIORdJ28gjriOk5azgWj1A
+Myself XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+<span class="red bold">JohnDoe HIS_PUBLIC_KEY
+JaneSmith HER_PUBLIC_KEY
+ThirdContact_I_canUse_Underscores_but_not_spaces CONTACT_PUBLIC_KEY</span>
+`;</pre>
 
         <ol start="5">
           <li>
-            Make sure you don't accidentally delete the last line of code:
-            <strong>`;</strong>
+            Make sure you keep the last line of code at the bottom of the file:
+            <br><strong>`;</strong>
+            <br>This character closes the data block and is required for the file to work properly.
           </li>
           <li>
-            Save and close the file. You should now see your new contacts in the list when encrypting a message.
+            Save the file and close your editor.
+            <br><strong>Result:</strong> All the contacts you’ve added will now appear automatically in the contact list
+            when you encrypt messages or files.
           </li>
         </ol>
       </section>
 
-    <!-- Remove a contact -->
-    <section class="instruction-block">
-      <h2>✱ How to remove a contact</h2>
+      <!-- Remove a contact -->
+      <section class="instruction-block">
+        <h2>✱ How to remove a contact</h2>
 
-      <ol>
-        <li>Open the <strong>contacts.js</strong> file using a text editor.</li>
-        <li>Delete the entire line corresponding to the contact you want to remove.</li>
-        <li>Save the file and close it.</li>
-      </ol>
-    </section>
+        <p>
+          If you no longer want a contact to appear in your D-Crypt list, you can safely remove them by editing
+          the same <strong>contacts.js</strong> file.
+        </p>
+
+        <ol>
+          <li>Open the <strong>contacts.js</strong> file using a text editor.</li>
+          <li>Locate the line containing that contact’s name and public key.</li>
+          <li>Delete the entire line for that contact.</li>
+          <li>Save the file and close it.</li>
+        </ol>
+
+        <p><strong>Tip:</strong> You can always re-add the same contact later by following the steps above.</p>
+      </section>
     </div>
   </main>
 
   <!-- FOOTER -->
   <footer>
-      <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
+    <p>&copy; <span id="current-year"></span> D-Crypt. All rights reserved.</p>
   </footer>
 </body>
 </html>
